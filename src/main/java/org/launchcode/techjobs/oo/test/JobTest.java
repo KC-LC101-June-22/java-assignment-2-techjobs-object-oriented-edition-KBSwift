@@ -13,15 +13,15 @@ import static org.junit.Assert.*;
 public class JobTest {
 
     @Test
-    public void testSettingJobId(){
-        Job test_job_1 = new Job();
-        Job test_job_2 = new Job();
+    public void testSettingJobId() {
+        Job firstJob = new Job();
+        Job secondJob = new Job();
 
-        assertNotEquals(test_job_1.getId(), test_job_2.getId());
+        assertNotEquals(firstJob, secondJob);
     }
 
     @Test
-    public void testJobConstructorSetsAllFields(){
+    public void testJobConstructorSetsAllFields() {
         Job testJob = new Job("Product tester", new Employer("ACME"), new Location("Desert"),
                 new PositionType("Quality control"), new CoreCompetency("Persistence"));
 
@@ -42,30 +42,57 @@ public class JobTest {
     }
 
     @Test
-    public void testJobsForEquality(){
-        Job test_job_4 = new Job("Typing monkey", new Employer("Microsoft"), new Location("Redmond"), new PositionType("Button hitter"), new CoreCompetency("Hit buttons"));
-        Job test_job_5 = new Job("Typing monkey", new Employer("Microsoft"), new Location("Redmond"), new PositionType("Button hitter"), new CoreCompetency("Hit buttons"));
+    public void testJobsForEquality() {
+        Job firstJobTest = new Job("Typing monkey", new Employer("Microsoft"), new Location("Redmond"), new PositionType("Button hitter"), new CoreCompetency("Hit buttons"));
+        Job secondJobTest = new Job("Typing monkey", new Employer("Microsoft"), new Location("Redmond"), new PositionType("Button hitter"), new CoreCompetency("Hit buttons"));
 
-        assertFalse(test_job_4.equals(test_job_5));
+        assertFalse(firstJobTest.equals(secondJobTest));
     }
 
     @Test
-    public void testToStringStartsAndEndsWithNewLine(){
-        Job test_job_6 = new Job("Typing monkey", new Employer("Microsoft"), new Location("Redmond"), new PositionType("Button hitter"), new CoreCompetency("Hit buttons"));
-        String stringToTest = test_job_6.toString();
-        String test = "\n";
+    public void testToStringStartsAndEndsWithNewLine() {
+        Job testJob = new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
+        String stringToTest = testJob.toString();
+//        String testing = "\n";
 
         assertEquals('\n', stringToTest.charAt(0));
-        assertEquals('\n', stringToTest.charAt(stringToTest.length()-1));
+        assertEquals('\n', stringToTest.charAt(stringToTest.length() - 1));
     }
 
     @Test
-    public void testToStringContainsCorrectLabelsAndData(){
-        Job test_job_7 = new Job("Typing monkey", new Employer("Microsoft"), new Location("Redmond"), new PositionType("Button hitter"), new CoreCompetency("Hit buttons"));
-        String stringToTest2 = test_job_7.toString();
+    public void testToStringContainsCorrectLabelsAndData() {
+        Job testJob = new Job("Typing monkey", new Employer("Microsoft"), new Location("Redmond"), new PositionType("Button hitter"), new CoreCompetency("Hit buttons"));
+        String testingString = testJob.toString();
 
-        assertEquals("Name: Typing monkey", stringToTest2);
+        assertEquals("Name: Typing monkey", testingString);
 
+    }
+
+    @Test
+    public void testToStringHandlesEmptyField() {
+        Job testJob = new Job("Product tester",
+                new Employer("ACME"),
+                new Location(""),
+                new PositionType("Quality control"),
+                new CoreCompetency(""));
+
+        String testString = testJob.toString();
+        String correctEmptyFieldMessage = "Data not available";
+
+        String correctLocationString = String.format("\nLocation: %s\n", correctEmptyFieldMessage);
+        String correctCoreCompetencyString = String.format("\nCore Competency: %s\n", correctEmptyFieldMessage);
+
+        assertTrue(testString.contains(correctLocationString));
+        assertTrue(testString.contains(correctCoreCompetencyString));
+
+        String correctOutput = "\nID: " + testJob.getId() + "\n" +
+                "Name: Product tester\n" +
+                "Employer: ACME\n" +
+                "Location: Data not available\n" +
+                "Position Type: Quality control\n" +
+                "Core Competency: Data not available\n";
+
+        assertEquals(correctOutput, testString);
     }
 
 }
