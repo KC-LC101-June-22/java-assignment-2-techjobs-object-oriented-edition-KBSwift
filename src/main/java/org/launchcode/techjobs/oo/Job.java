@@ -17,30 +17,45 @@ public class Job {
     //  other five fields. The second constructor should also call the first in order to initialize
     //  the 'id' field.
 
-    // TODO: Add custom equals and hashCode methods. Consider two Job objects "equal" when their id fields
-    //  match.
-
-    // TODO: Add getters for each field EXCEPT nextId. Add setters for each field EXCEPT nextID
-    //  and id.
-
-    public Job() {
-        this.id = nextId;
+    public Job(){
+        id = nextId;
         nextId++;
     }
 
-    public Job(String name, Employer employer, Location location, PositionType positionType, CoreCompetency coreCompetency) {
+    public Job(String name, Employer employer, Location location, PositionType positionType, CoreCompetency coreCompetency){
+
         this();
         this.name = name;
         this.employer = employer;
         this.location = location;
         this.positionType = positionType;
         this.coreCompetency = coreCompetency;
+
     }
+
+    // TODO: Add custom equals and hashCode methods. Consider two Job objects "equal" when their id fields
+    //  match.
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Job job = (Job) o;
+        return id == job.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+
+    // TODO: Add getters for each field EXCEPT nextId. Add setters for each field EXCEPT nextID
+    //  and id.
 
     public int getId() {
         return id;
     }
-
 
     public String getName() {
         return name;
@@ -82,21 +97,50 @@ public class Job {
         this.coreCompetency = coreCompetency;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Job job = (Job) o;
-        return getId() == job.getId();
-    }
+    public String toString(){
+        String employerString;
+        String locationString;
+        String positionString;
+        String competencyString;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
-    }
+        if(name == ""){
+            name = "Data not available";
+        }
 
-//    @Override
-//    public String toString() {
-//
-//    }
+        if(employer == null || employer.toString() == ""){
+            employerString = "Data not available";
+        }
+        else{
+            employerString = employer.toString();
+        }
+
+        if(location == null || location.toString() == ""){
+            locationString = "Data not available";
+        }
+        else{
+            locationString = location.toString();
+        }
+
+        if(positionType == null || positionType.toString() == ""){
+            positionString = "Data not available";
+        }
+        else{
+            positionString = positionType.toString();
+        }
+
+        if(coreCompetency == null || coreCompetency.toString() == ""){
+            competencyString = "Data not available";
+        }
+        else{
+            competencyString = coreCompetency.toString();
+        }
+
+        return "\n" +
+                "ID: " + id + "\n" +
+                "Name: " + name + "\n" +
+                "Employer: " + employerString + "\n" +
+                "Location: " + locationString + "\n" +
+                "Position Type: " + positionString + "\n" +
+                "Core Competency: " + competencyString + "\n";
+    }
 }
